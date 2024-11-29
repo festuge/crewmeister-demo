@@ -38,11 +38,11 @@ jobs:
       # Step 5: Build the Docker image
       - name: Build Docker image
         run: |
-          docker build -t ${{env.REPO_NAME}}:latest .
+          docker build -t crewmeister:latest .
 
       # Step 6: Tag and push the image to ECR
       - name: Push to ECR
         run: |
-          REPO_URI=$(aws ecr describe-repositories --repository-names ${{env.REPO_NAME}} --query "repositories[0].repositoryUri" --output text)
-          docker tag ${{env.REPO_NAME}}:latest $REPO_URI:latest
+          REPO_URI=$(aws ecr describe-repositories --repository-names crewmeister --query "repositories[0].repositoryUri" --output text)
+          docker tag crewmeister:latest $REPO_URI:latest
           docker push $REPO_URI:latest
