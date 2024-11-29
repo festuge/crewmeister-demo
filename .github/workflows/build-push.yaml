@@ -28,7 +28,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{var.AWS_REGION}}
+          aws-region: ${{env.AWS_REGION}}
 
       # Step 4: Log in to Amazon ECR
       - name: Log in to Amazon ECR
@@ -38,11 +38,11 @@ jobs:
       # Step 5: Build the Docker image
       - name: Build Docker image
         run: |
-          docker build -t ${{var.REPO_NAME}}:latest .
+          docker build -t ${{env.REPO_NAME}}:latest .
 
       # Step 6: Tag and push the image to ECR
       - name: Push to ECR
         run: |
-          REPO_URI=$(aws ecr describe-repositories --repository-names ${{var.REPO_NAME}} --query "repositories[0].repositoryUri" --output text)
-          docker tag ${{var.REPO_NAME}}:latest $REPO_URI:latest
+          REPO_URI=$(aws ecr describe-repositories --repository-names ${{env.REPO_NAME}} --query "repositories[0].repositoryUri" --output text)
+          docker tag ${{env.REPO_NAME}}:latest $REPO_URI:latest
           docker push $REPO_URI:latest
